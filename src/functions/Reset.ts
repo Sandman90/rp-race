@@ -21,4 +21,3 @@ function resetCreaturePositions() {
   finishLineElement.style.transition = `opacity 0.5s ease-in, top ${lineDescentDuration / 1000}s linear`;
 }
 */
-// export { resetCreaturePositions,  };

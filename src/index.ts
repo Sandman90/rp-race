@@ -1,13 +1,7 @@
 // import { resetCreaturePositions } from "./functions/Reset";
-// import { Creature } from "./functions/Creature";
+import { Creature } from "./functions/Creatures";
 
 document.addEventListener('DOMContentLoaded', () => {
-  interface Creature {
-    element: HTMLElement;
-    id: string;
-    name: string; // AGGIUNTO: Nome della creatura
-  }
-
   const creaturesElements = document.querySelectorAll<HTMLElement>('.creature');
   const startButton = document.getElementById('startButton') as HTMLButtonElement;
   const resetButton = document.getElementById('resetButton') as HTMLButtonElement;
@@ -34,11 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let fakeWinner: Creature | null = null;
 
 // Configurazione della Corsa
-  const totalRaceDuration = 15000;     // Durata totale della corsa (5.0s)
-  const startDelay = 900;             // Ritardo prima del movimento del terreno (0.5s)
+  const totalRaceDuration = 13000;     // Durata totale della corsa (5.0s)
+  const startDelay = 1000;             // Ritardo prima del movimento del terreno (0.5s)
   const lineDescentDuration = 3000;   // Durata della discesa della linea (4.0s)
-  const lineDescentStart = 12000;      // La linea inizia a scendere a 1000ms
-  const CRASH_PROBABILITY = 0.7;      // 50% di probabilità di crash
+  const lineDescentStart = 10000;      // La linea inizia a scendere a 1000ms
+  const CRASH_PROBABILITY = 0.95;      // 50% di probabilità di crash
 
 // Posizioni (Finali, ottimizzate)
   const FINISH_LINE_START_TOP = 0;

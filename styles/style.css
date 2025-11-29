@@ -173,7 +173,7 @@ body {
 }
 
 button {
-    padding: 30px 30px;
+    padding: 40px 20px;
     font-size: 24px;
     cursor: pointer;
     /*    background-color: #007bff; */
@@ -184,15 +184,17 @@ button {
     transition: background-color 0.2s ease, filter 0.3s ease-in-out; /* Transizione fluida */
     background: url("../images/WoodButton.png") 50% 50% no-repeat; background-size: 100%;
     filter: drop-shadow(4px -4px 9px rgba(0, 0, 0, 0.7)) brightness(1) contrast(1);
+    background-color: transparent;
 }
 
 button:hover {
     /* background-color: #0056b3; */
+    background-color: transparent;
     filter: drop-shadow(4px -4px 9px rgba(0, 0, 0, 0.9)) brightness(1.1) contrast(1.2);
 }
 
 button:disabled {
-    background-color: #6c757d;
+    background-color: transparent;
     cursor: not-allowed;
     opacity: 0.6 !important;
 }
