@@ -1,5 +1,5 @@
 
-
+/*
 function resetCreaturePositions() {
   creatures.forEach(creature => {
     // Imposta top: 0px per abilitare le transizioni (come discusso)
@@ -20,5 +20,5 @@ function resetCreaturePositions() {
   void finishLineElement.offsetWidth;
   finishLineElement.style.transition = `opacity 0.5s ease-in, top ${lineDescentDuration / 1000}s linear`;
 }
-
-export { resetCreaturePositions,  };
+*/
+// export { resetCreaturePositions,  };
