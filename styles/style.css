@@ -50,7 +50,7 @@ body {
     /* Larghezza invariata, Altezza AGGIORNATA */
     width: 1024px;
     height: 760px; /* AGGIORNATO */
-    border: 5px solid #555;
+    border: 3px solid #352c21;
     background-color: #333;
     overflow: hidden;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
@@ -73,7 +73,7 @@ body {
 }
 
 .track.racing {
-    animation: scrollTrack 2.8s linear infinite;
+    animation: scrollTrack 3.8s linear infinite;
 }
 
 @keyframes scrollTrack {
@@ -92,9 +92,8 @@ body {
     left: 0;
     width: 100%;
     height: 5px;
-    background-color: red;
+    background-color: rgba(101, 22, 22, 0.5);
     z-index: 2;
-
     opacity: 0;
     transition: opacity 0.5s ease-in, top 4.0s linear;
     animation: none;
@@ -121,7 +120,7 @@ body {
     /* border-radius: 50%;
     border: 3px solid #eee;
     box-shadow: #222222 0px 0px 10px 3px; */
-    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.8));
+    filter: drop-shadow(7px -8px 17px rgba(0, 0, 0, 0.8));
 
     display: block;
     position: relative;
@@ -133,7 +132,7 @@ body {
 /* Sostituzione delle creature */
 #creature1 { background: url("../images/CreatureToken1.png") 50% 50% no-repeat; background-size: 100%; }
 #creature2 { background: url("../images/CreatureToken2.png") 50% 50% no-repeat; background-size: 100%; }
-#creature3 { background: url("../images/CreatureToken3.png") 50% 50% no-repeat; background-size: 100%; }
+#creature3 { background: url("../images/CreatureToken3.png") 50% 50% no-repeat; background-size: 97%; }
 #creature4 { background: url("../images/CreatureToken4.png") 50% 50% no-repeat; background-size: 100%; }
 #creature5 { background: url("../images/CreatureToken5.png") 50% 50% no-repeat; background-size: 100%; }
 
@@ -165,7 +164,7 @@ body {
 /* --- CONTROLLI --- */
 .controls {
     position: absolute;
-    bottom: 20px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -174,23 +173,28 @@ body {
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 1em;
+    padding: 30px 30px;
+    font-size: 24px;
     cursor: pointer;
-    background-color: #007bff;
+    /*    background-color: #007bff; */
+    font-weight: bolder;
     color: white;
     border: none;
     border-radius: 5px;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, filter 0.3s ease-in-out; /* Transizione fluida */
+    background: url("../images/WoodButton.png") 50% 50% no-repeat; background-size: 100%;
+    filter: drop-shadow(4px -4px 9px rgba(0, 0, 0, 0.7)) brightness(1) contrast(1);
 }
 
 button:hover {
-    background-color: #0056b3;
+    /* background-color: #0056b3; */
+    filter: drop-shadow(4px -4px 9px rgba(0, 0, 0, 0.9)) brightness(1.1) contrast(1.2);
 }
 
 button:disabled {
     background-color: #6c757d;
     cursor: not-allowed;
+    opacity: 0.6 !important;
 }
 
 /* Gestione Visibilità Tasti */
@@ -199,4 +203,32 @@ button:disabled {
 }
 #resetButton {
     display: none;
+}
+
+/* --- MESSAGGIO VINCITORE --- */
+.winner-display {
+    font-family: "Orbitron", Helvetica Neue, Helvetica, Arial, sans-serif;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    font-size: 3em; /* Font grande */
+    font-weight: bold;
+    text-align: center;
+    z-index: 10; /* Sopra tutto il resto */
+    opacity: 0; /* Inizialmente invisibile */
+    pointer-events: none; /* Non blocca gli eventi del mouse */
+    transition: opacity 0.5s ease-out; /* Transizione per apparire/scomparire */
+    /* width: 56%; */
+}
+p {
+    line-height: 100%;
+}
+
+.winner-display.show {
+    opacity: 1;
 }

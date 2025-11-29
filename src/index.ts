@@ -2,12 +2,10 @@
 // import { Creature } from "./functions/Creature";
 
 document.addEventListener('DOMContentLoaded', () => {
-
-  // script.ts
-
   interface Creature {
     element: HTMLElement;
     id: string;
+    name: string; // AGGIUNTO: Nome della creatura
   }
 
   const creaturesElements = document.querySelectorAll<HTMLElement>('.creature');
@@ -15,6 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetButton = document.getElementById('resetButton') as HTMLButtonElement;
   const trackElement = document.querySelector('.track') as HTMLElement;
   const finishLineElement = document.querySelector('.finish-line') as HTMLElement;
+
+// AGGIUNTO: Elementi per il display del vincitore
+  const winnerDisplay = document.getElementById('winnerDisplay') as HTMLElement;
+  const winnerText = document.getElementById('winnerText') as HTMLElement;
 
 // Suoni
   const startSound = document.getElementById('startSound') as HTMLAudioElement;
@@ -31,24 +33,28 @@ document.addEventListener('DOMContentLoaded', () => {
   let winner: Creature | null = null;
   let fakeWinner: Creature | null = null;
 
-  // Configurazione della Corsa
+// Configurazione della Corsa
   const totalRaceDuration = 15000;     // Durata totale della corsa (5.0s)
-  const startDelay = 500;             // Ritardo prima del movimento del terreno (0.5s)
+  const startDelay = 900;             // Ritardo prima del movimento del terreno (0.5s)
   const lineDescentDuration = 3000;   // Durata della discesa della linea (4.0s)
   const lineDescentStart = 12000;      // La linea inizia a scendere a 1000ms
-  const CRASH_PROBABILITY = 0.5;      // 50% di probabilità di crash
+  const CRASH_PROBABILITY = 0.7;      // 50% di probabilità di crash
 
-// Posizioni (Ricalibrate per l'altezza 760px)
+// Posizioni (Finali, ottimizzate)
   const FINISH_LINE_START_TOP = 0;
-  const FINISH_LINE_END_TOP = 596;    // CORREZIONE: 700px per un container di 760px.
+  const FINISH_LINE_END_TOP = 596;
   const WINNER_LIFT_OFFSET = '-30px';
   const FAKE_WINNER_LIFT_OFFSET = '-15px';
-  const CRASH_RETREAT_OFFSET = '500px';
+  const CRASH_RETREAT_OFFSET = '150px'; // Di quanto arretra la creatura in caso di crash.
 
-// Array delle creature
-  const creatures: Creature[] = Array.from(creaturesElements).map(el => ({
+// AGGIUNTO: Nomi delle creature
+  const creatureNames = ['forziere', 'boccale', 'barile', 'sgabello', 'scopa'];
+
+// Array delle creature (modificato per includere il nome)
+  const creatures: Creature[] = Array.from(creaturesElements).map((el, index) => ({
     element: el,
     id: el.id,
+    name: creatureNames[index] // Assegna il nome in base all'ordine
   }));
 
 // --- Funzioni di Utilità ---
@@ -65,18 +71,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function resetCreaturePositions() {
     creatures.forEach(creature => {
-      // Imposta top: 0px per abilitare le transizioni
       creature.element.style.top = '0px';
       creature.element.style.transform = '';
       creature.element.style.opacity = '1';
       creature.element.classList.remove('winner', 'fake-winner', 'crashed');
     });
 
+    // Nasconde il display del vincitore al reset
+    winnerDisplay.classList.remove('show');
+
     // Resetta la linea del traguardo
     finishLineElement.style.opacity = '0';
     finishLineElement.classList.remove('active');
 
-    // Resetta la posizione del top della linea e riabilita la transizione
     finishLineElement.style.transition = 'none';
     finishLineElement.style.top = `${FINISH_LINE_START_TOP}px`;
 
@@ -87,25 +94,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Logica Crash (Rimanere Indietro) ---
 
   function setupCrashEvent(nonParticipants: Creature[]) {
-    // 1. Probabilità: L'evento si verifica solo il 50% delle volte
     if (Math.random() > CRASH_PROBABILITY || nonParticipants.length === 0) {
       return;
     }
 
-    // 2. Scegli una vittima a caso tra i non-vincenti
     const crashVictim = nonParticipants[Math.floor(Math.random() * nonParticipants.length)];
+    const crashTime = (Math.random() * (lineDescentStart - startDelay) + startDelay);
 
-    // 3. Determina un momento casuale per l'uscita di pista
-    // Deve succedere dopo l'inizio effettivo (500ms) e prima dello scatto finale (1000ms)
-    const crashTime = Math.random() * (lineDescentStart - startDelay) + startDelay;
-
-    console.log(`Creatura ${crashVictim.id} designata per rimanere indietro a ${crashTime.toFixed(0)}ms.`);
+    console.log(`Creatura ${crashVictim.name} (${crashVictim.id}) designata per rimanere indietro a ${crashTime.toFixed(0)}ms.`);
 
     crashTimeout = window.setTimeout(() => {
-      // Applica gli stili CSS per arretrare e scomparire morbidamente
       crashVictim.element.classList.add('crashed');
-
-      // Lo spostamento verso il basso (indietro nella prospettiva di corsa)
       crashVictim.element.style.top = CRASH_RETREAT_OFFSET;
 
     }, crashTime);
@@ -189,7 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function frame() {
       if (!isRaceRunning) return;
 
-      // Se la creatura è "crashata" (rimasta indietro), ferma l'oscillazione e non fare nulla.
       if (creatureElement.classList.contains('crashed')) {
         return;
       }
@@ -220,7 +218,13 @@ document.addEventListener('DOMContentLoaded', () => {
     endSound.play();
     raceSound.pause();
 
-    console.log(`Race finished! Winner: ${winner ? winner.id : 'N/A'}`);
+    // Mostra il vincitore al centro
+    if (winner) {
+      winnerText.textContent = `Il mimic ${winner.name}`; // Messaggio dinamico
+      winnerDisplay.classList.add('show'); // Rende visibile il div
+    }
+
+    console.log(`Race finished! Winner: ${winner ? winner.name : 'N/A'}`);
   }
 
   function resetRace() {
@@ -252,5 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   resetCreaturePositions();
   showStartButton();
+
 
 });
