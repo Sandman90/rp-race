@@ -34,7 +34,6 @@ h2 {
     color: #b1adad;
 }
 
-
 body {
     display: flex;
     justify-content: center;
@@ -48,12 +47,13 @@ body {
 
 .race-container {
     position: relative;
-    width: 600px;
-    height: 400px;
+    /* Larghezza invariata, Altezza AGGIORNATA */
+    width: 1024px;
+    height: 760px; /* AGGIORNATO */
     border: 5px solid #555;
     background-color: #333;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
     border-radius: 10px;
 }
 
@@ -64,20 +64,16 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Pattern di terreno a strisce scure */
-    background-image: repeating-linear-gradient(
-            to bottom,
-            #444 0px,
-            #444 20px,
-            #555 20px,
-            #555 40px
-    );
+
+    background-image: url("../images/TerrainLoop.jpg");
+    background-repeat: repeat-y;
+    background-size: 1024px 760px;
+    background-position-y: 0;
     animation: none;
 }
 
-/* Animazione che si attiva solo durante la corsa */
 .track.racing {
-    animation: scrollTrack 0.5s linear infinite; /* Velocità di scorrimento */
+    animation: scrollTrack 2.8s linear infinite;
 }
 
 @keyframes scrollTrack {
@@ -85,101 +81,91 @@ body {
         background-position-y: 0;
     }
     to {
-        background-position-y: 80px; /* Deve essere il doppio del blocco 40px */
+        background-position-y: 760px;
     }
 }
 
 /* --- LINEA DEL TRAGUARDO --- */
 .finish-line {
     position: absolute;
-    top: 0; /* Inizialmente posizionata in alto */
+    top: 0;
     left: 0;
     width: 100%;
     height: 5px;
     background-color: red;
     z-index: 2;
 
-    /* Invisibile all'inizio, transizione per l'opacità */
     opacity: 0;
-    transition: opacity 0.5s ease-in;
+    transition: opacity 0.5s ease-in, top 4.0s linear;
     animation: none;
 }
 
-/* Attiva l'animazione per la linea del traguardo, sincronizzata col terreno */
 .finish-line.active {
-    opacity: 1; /* Rende la linea visibile */
-    /* Usa la stessa animazione del track per muoversi con la stessa velocità e direzione */
-    animation: scrollTrack 0.5s linear infinite;
+    opacity: 1;
 }
 
 /* --- CREATURE --- */
 .creatures {
     position: absolute;
-    bottom: 20px; /* Inizialmente le creature sono in basso (Start Line) */
+    bottom: 50px;
     width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
-    z-index: 3; /* Assicura che le creature siano sopra la linea del traguardo */
+    z-index: 3;
 }
 
 .creature {
-    width: 50px;
-    height: 50px;
-    background-color: #eee;
-    border-radius: 50%;
-    border: 2px solid #aaa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.8em;
-    font-weight: bold;
-    color: #333;
-    /* position: relative; / Necessario per lo spostamento verticale del vincitore */
+    width: 80px;
+    height: 80px;
+    /* border-radius: 50%;
+    border: 3px solid #eee;
+    box-shadow: #222222 0px 0px 10px 3px; */
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.8));
 
-    /* Transizione morbida per lo scatto finale del vincitore */
-    /* transition: transform 0.3s ease-out, top 0.5s ease-out; */
-
-    /* ... altre proprietà ... */
+    display: block;
     position: relative;
-    top: 0; /* Inizialmente posizionata in alto */
 
-    /* Aumenta la durata della transizione 'top' per uno scatto molto più morbido */
-    transition: transform 0.3s ease-out, top 0.5s ease-out;
+    /* Transizione morbida per tutti i movimenti (scatto e crash) */
+    transition: transform 0.3s ease-out, top 0.7s ease-out, opacity 0.7s ease-out;
 }
 
-/* Nasconde un pulsante per volta, gestito da JavaScript */
-#startButton {
-    display: inline-block;
-}
-#resetButton {
-    display: none;
+/* Sostituzione delle creature */
+#creature1 { background: url("../images/CreatureToken1.png") 50% 50% no-repeat; background-size: 100%; }
+#creature2 { background: url("../images/CreatureToken2.png") 50% 50% no-repeat; background-size: 100%; }
+#creature3 { background: url("../images/CreatureToken3.png") 50% 50% no-repeat; background-size: 100%; }
+#creature4 { background: url("../images/CreatureToken4.png") 50% 50% no-repeat; background-size: 100%; }
+#creature5 { background: url("../images/CreatureToken5.png") 50% 50% no-repeat; background-size: 100%; }
+
+/*
+#creature1 { background-color: #ff9999; }
+#creature2 { background-color: #99ff99; }
+#creature3 { background-color: #9999ff; }
+#creature4 { background-color: #ffff99; }
+#creature5 { background-color: #99ffff; }
+*/
+
+ */
+/* --- CRASH E VITTORIA --- */
+
+/* NUOVA LOGICA: Arretra (top aumenta) e scompare */
+.creature.crashed {
+    /* La transizione è gestita sulla proprietà 'top' dal JS. */
+    opacity: 0;
+
+    /* Rimuoviamo qualsiasi altra trasformazione che interferisca con il 'top' */
+    transform: none !important;
 }
 
-/* La creatura "quasi-vincente" non ha bisogno di uno stile dedicato a parte lo scatto (gestito dal JS e dal CSS .creature) */
-.creature.fake-winner {
-    /* Puoi aggiungere uno stile di bordo per identificarla, se vuoi */
-    /* border: 2px solid orange; */
+.creature.winner, .creature.fake-winner {
+    border-color: gold;
 }
 
-/* Esempi di creature diverse, puoi personalizzarle */
-#creature1 { background-color: #ff9999; content: 'C1'; }
-#creature2 { background-color: #99ff99; content: 'C2'; }
-#creature3 { background-color: #9999ff; content: 'C3'; }
-#creature4 { background-color: #ffff99; content: 'C4'; }
-#creature5 { background-color: #99ffff; content: 'C5'; }
-
-/* Posizionamento finale del vincitore: solo una piccola elevazione */
-.creature.winner {
-    /* Il 'top' viene impostato via JS per lo scatto finale.
-       Il 'transform' viene resettato via JS, fermando l'oscillazione. */
-    transition: top 0.5s ease-out;
-}
 
 /* --- CONTROLLI --- */
 .controls {
     position: absolute;
-    bottom: 10px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -205,4 +191,12 @@ button:hover {
 button:disabled {
     background-color: #6c757d;
     cursor: not-allowed;
+}
+
+/* Gestione Visibilità Tasti */
+#startButton {
+    display: inline-block;
+}
+#resetButton {
+    display: none;
 }

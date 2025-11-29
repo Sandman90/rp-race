@@ -1,7 +1,9 @@
+// import { resetCreaturePositions } from "./functions/Reset";
+// import { Creature } from "./functions/Creature";
+
 document.addEventListener('DOMContentLoaded', () => {
-// script.ts
-// script.ts
-// script.ts
+
+  // script.ts
 
   interface Creature {
     element: HTMLElement;
@@ -24,23 +26,24 @@ document.addEventListener('DOMContentLoaded', () => {
   let raceDelayTimeout: number;
   let finishMarkerTimeout: number;
   let fakeWinTimeout: number;
-  let crashTimeout: number | undefined; // Nuovo timer per l'uscita di strada
+  let crashTimeout: number | undefined;
   let isRaceRunning: boolean = false;
   let winner: Creature | null = null;
   let fakeWinner: Creature | null = null;
 
-// Configurazione della Corsa
-  const totalRaceDuration = 5000;     // Durata totale della corsa (5.0s)
+  // Configurazione della Corsa
+  const totalRaceDuration = 15000;     // Durata totale della corsa (5.0s)
   const startDelay = 500;             // Ritardo prima del movimento del terreno (0.5s)
-  const lineDescentDuration = 4000;   // Durata della discesa della linea (4.0s)
-  const lineDescentStart = 1000;      // La linea inizia a scendere a 1000ms
+  const lineDescentDuration = 3000;   // Durata della discesa della linea (4.0s)
+  const lineDescentStart = 12000;      // La linea inizia a scendere a 1000ms
   const CRASH_PROBABILITY = 0.5;      // 50% di probabilità di crash
 
-// Posizioni
+// Posizioni (Ricalibrate per l'altezza 760px)
   const FINISH_LINE_START_TOP = 0;
-  const FINISH_LINE_END_TOP = 300;
+  const FINISH_LINE_END_TOP = 596;    // CORREZIONE: 700px per un container di 760px.
   const WINNER_LIFT_OFFSET = '-30px';
   const FAKE_WINNER_LIFT_OFFSET = '-15px';
+  const CRASH_RETREAT_OFFSET = '500px';
 
 // Array delle creature
   const creatures: Creature[] = Array.from(creaturesElements).map(el => ({
@@ -62,10 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function resetCreaturePositions() {
     creatures.forEach(creature => {
-      // Imposta top: 0px per abilitare le transizioni (come discusso)
+      // Imposta top: 0px per abilitare le transizioni
       creature.element.style.top = '0px';
       creature.element.style.transform = '';
-      creature.element.style.opacity = '1'; // Riporta l'opacità a 1
+      creature.element.style.opacity = '1';
       creature.element.classList.remove('winner', 'fake-winner', 'crashed');
     });
 
@@ -81,29 +84,29 @@ document.addEventListener('DOMContentLoaded', () => {
     finishLineElement.style.transition = `opacity 0.5s ease-in, top ${lineDescentDuration / 1000}s linear`;
   }
 
-// --- Logica Crash ---
+// --- Logica Crash (Rimanere Indietro) ---
 
   function setupCrashEvent(nonParticipants: Creature[]) {
     // 1. Probabilità: L'evento si verifica solo il 50% delle volte
     if (Math.random() > CRASH_PROBABILITY || nonParticipants.length === 0) {
-      return; // Nessun crash in questa gara o non ci sono partecipanti validi
+      return;
     }
 
     // 2. Scegli una vittima a caso tra i non-vincenti
     const crashVictim = nonParticipants[Math.floor(Math.random() * nonParticipants.length)];
 
     // 3. Determina un momento casuale per l'uscita di pista
-    // Deve succedere dopo l'inizio effettivo (500ms) e prima della fine (4000ms)
-    const crashTime = Math.random() * (totalRaceDuration - 1000) + 500;
+    // Deve succedere dopo l'inizio effettivo (500ms) e prima dello scatto finale (1000ms)
+    const crashTime = Math.random() * (lineDescentStart - startDelay) + startDelay;
 
-    console.log(`Creatura ${crashVictim.id} designata per uscire di pista a ${crashTime.toFixed(0)}ms.`);
+    console.log(`Creatura ${crashVictim.id} designata per rimanere indietro a ${crashTime.toFixed(0)}ms.`);
 
     crashTimeout = window.setTimeout(() => {
-      // Applica gli stili CSS per curvare e scomparire
+      // Applica gli stili CSS per arretrare e scomparire morbidamente
       crashVictim.element.classList.add('crashed');
 
-      // Lo scarto orizzontale e l'opacità saranno gestiti da CSS
-      // Ad esempio: transform: translateX(200px) scale(0.5); opacity: 0;
+      // Lo spostamento verso il basso (indietro nella prospettiva di corsa)
+      crashVictim.element.style.top = CRASH_RETREAT_OFFSET;
 
     }, crashTime);
   }
@@ -119,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showResetButton();
 
     // 1. Determina vincitore e quasi-vincitore
-    const creatureIndices = Array.from(Array(creatures.length).keys());
     const winnerIndex = Math.floor(Math.random() * creatures.length);
     winner = creatures[winnerIndex];
 
@@ -151,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fakeWinTimeout = window.setTimeout(() => {
       if (fakeWinner) {
         fakeWinner.element.classList.add('fake-winner');
-        void fakeWinner.element.offsetWidth; // Forza repaint
+        void fakeWinner.element.offsetWidth;
         fakeWinner.element.style.top = FAKE_WINNER_LIFT_OFFSET;
       }
     }, 2000);
@@ -166,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Vincitore
       if (winner) {
         winner.element.classList.add('winner');
-        void winner.element.offsetWidth; // Forza repaint
+        void winner.element.offsetWidth;
         winner.element.style.top = WINNER_LIFT_OFFSET;
       }
 
@@ -187,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function frame() {
       if (!isRaceRunning) return;
 
-      // Ignora l'animazione di oscillazione se la creatura è crashata
+      // Se la creatura è "crashata" (rimasta indietro), ferma l'oscillazione e non fare nulla.
       if (creatureElement.classList.contains('crashed')) {
         return;
       }
@@ -208,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fermiamo le animazioni
     trackElement.classList.remove('racing');
     creatures.forEach(creature => {
-      // Resetta il transform solo se la creatura non è crashata
       if (!creature.element.classList.contains('crashed')) {
         creature.element.style.transform = '';
       }
@@ -251,4 +252,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   resetCreaturePositions();
   showStartButton();
+
 });
