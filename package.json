@@ -1,0 +1,26 @@
+{
+  "name": "terrain-randomizer",
+  "version": "1.0.0",
+  "scripts": {
+    "dev2": "concurrently \"tsc --watch\" \"nodemon --watch dist --delay 2 dist/index.js\"",
+    "dev": "concurrently \"npx webpack -w\" \"nodemon --watch dist --delay 2 dist/index.js\"",
+    "build": "webpack",
+    "build2": "tsc",
+    "deploy": "eb deploy"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8"
+  },
+  "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
+    "@types/node": "^24.5.2",
+    "javascript-obfuscator": "^4.1.1",
+    "nodemon": "^3.0.1",
+    "sass": "^1.92.1",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.2",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1",
+    "webpack-obfuscator": "^3.5.1"
+  }
+}

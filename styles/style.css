@@ -1,0 +1,208 @@
+/** Font faces **/
+@font-face {
+    font-family: 'Orbitron';
+    font-style: normal;
+    font-weight: 400;
+    src: local("Orbitron Regular"), local("Orbitron-Regular"), url(https://fonts.gstatic.com/s/orbitron/v9/HmnHiRzvcnQr8CjBje6GQvesZW2xOQ-xsNqO47m55DA.woff2) format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
+}
+body {
+    outline: none;
+    text-align: center;
+    background-color: #251826; /* #000; */
+    font-size: 14px;
+    font-family: "Orbitron", Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: #fff;
+    position: relative;
+    margin: 0 auto;
+    text-indent: 0;
+    line-height: 16px;
+    min-width: 300px;
+    /* box-shadow: 5px 5px 30px #000, 0 0 20px #222, 5px -5px 120px #673d69, 0 -5px 168px #151515; */
+}
+.def-back {
+    background-color: #2d223d;
+    padding: 20px;
+}
+h2 {
+    margin: 0 auto 20px;
+}
+#footer {
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    padding: 12px;
+    font-size: 13px;
+    color: #b1adad;
+}
+
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #222;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.race-container {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    border: 5px solid #555;
+    background-color: #333;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+}
+
+/* --- TRACCIA (TERRENO) --- */
+.track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Pattern di terreno a strisce scure */
+    background-image: repeating-linear-gradient(
+            to bottom,
+            #444 0px,
+            #444 20px,
+            #555 20px,
+            #555 40px
+    );
+    animation: none;
+}
+
+/* Animazione che si attiva solo durante la corsa */
+.track.racing {
+    animation: scrollTrack 0.5s linear infinite; /* Velocità di scorrimento */
+}
+
+@keyframes scrollTrack {
+    from {
+        background-position-y: 0;
+    }
+    to {
+        background-position-y: 80px; /* Deve essere il doppio del blocco 40px */
+    }
+}
+
+/* --- LINEA DEL TRAGUARDO --- */
+.finish-line {
+    position: absolute;
+    top: 0; /* Inizialmente posizionata in alto */
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: red;
+    z-index: 2;
+
+    /* Invisibile all'inizio, transizione per l'opacità */
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+    animation: none;
+}
+
+/* Attiva l'animazione per la linea del traguardo, sincronizzata col terreno */
+.finish-line.active {
+    opacity: 1; /* Rende la linea visibile */
+    /* Usa la stessa animazione del track per muoversi con la stessa velocità e direzione */
+    animation: scrollTrack 0.5s linear infinite;
+}
+
+/* --- CREATURE --- */
+.creatures {
+    position: absolute;
+    bottom: 20px; /* Inizialmente le creature sono in basso (Start Line) */
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    z-index: 3; /* Assicura che le creature siano sopra la linea del traguardo */
+}
+
+.creature {
+    width: 50px;
+    height: 50px;
+    background-color: #eee;
+    border-radius: 50%;
+    border: 2px solid #aaa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #333;
+    /* position: relative; / Necessario per lo spostamento verticale del vincitore */
+
+    /* Transizione morbida per lo scatto finale del vincitore */
+    /* transition: transform 0.3s ease-out, top 0.5s ease-out; */
+
+    /* ... altre proprietà ... */
+    position: relative;
+    top: 0; /* Inizialmente posizionata in alto */
+
+    /* Aumenta la durata della transizione 'top' per uno scatto molto più morbido */
+    transition: transform 0.3s ease-out, top 0.5s ease-out;
+}
+
+/* Nasconde un pulsante per volta, gestito da JavaScript */
+#startButton {
+    display: inline-block;
+}
+#resetButton {
+    display: none;
+}
+
+/* La creatura "quasi-vincente" non ha bisogno di uno stile dedicato a parte lo scatto (gestito dal JS e dal CSS .creature) */
+.creature.fake-winner {
+    /* Puoi aggiungere uno stile di bordo per identificarla, se vuoi */
+    /* border: 2px solid orange; */
+}
+
+/* Esempi di creature diverse, puoi personalizzarle */
+#creature1 { background-color: #ff9999; content: 'C1'; }
+#creature2 { background-color: #99ff99; content: 'C2'; }
+#creature3 { background-color: #9999ff; content: 'C3'; }
+#creature4 { background-color: #ffff99; content: 'C4'; }
+#creature5 { background-color: #99ffff; content: 'C5'; }
+
+/* Posizionamento finale del vincitore: solo una piccola elevazione */
+.creature.winner {
+    /* Il 'top' viene impostato via JS per lo scatto finale.
+       Il 'transform' viene resettato via JS, fermando l'oscillazione. */
+    transition: top 0.5s ease-out;
+}
+
+/* --- CONTROLLI --- */
+.controls {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 4;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}

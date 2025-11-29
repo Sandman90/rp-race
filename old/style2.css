@@ -1,0 +1,64 @@
+/** Font faces **/
+@font-face {
+    font-family: 'Orbitron';
+    font-style: normal;
+    font-weight: 400;
+    src: local("Orbitron Regular"), local("Orbitron-Regular"), url(https://fonts.gstatic.com/s/orbitron/v9/HmnHiRzvcnQr8CjBje6GQvesZW2xOQ-xsNqO47m55DA.woff2) format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
+}
+body {
+    outline: none;
+    text-align: center;
+    background-color: #251826; /* #000; */
+    font-size: 14px;
+    font-family: "Orbitron", Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: #fff;
+    position: relative;
+    margin: 0 auto;
+    text-indent: 0;
+    line-height: 16px;
+    min-width: 300px;
+    /* box-shadow: 5px 5px 30px #000, 0 0 20px #222, 5px -5px 120px #673d69, 0 -5px 168px #151515; */
+}
+.def-back {
+    background-color: #2d223d;
+    padding: 20px;
+}
+h2 {
+    margin: 0 auto 20px;
+}
+#footer {
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    padding: 12px;
+    font-size: 13px;
+    color: #b1adad;
+}
+
+
+#grid-container {
+    display: grid;
+    border: 1px solid rgb(140, 140, 140);
+    margin: 20px auto;
+    background: url("../images/BackgroundTerrain1.jpg");
+    grid-gap: 0;
+    border-radius: 0.4rem;
+    overflow: hidden;
+}
+
+.grid-square {
+    /** width: 52px; */
+    height: 40px;
+    /* border: 1px solid #ccccccc9; */
+    border: 1px solid rgba(63, 62, 62, 0.78);
+    box-sizing: border-box;
+    /* background-color: #f0f0f09c; */
+    background-color: rgba(24, 24, 24, 0.68);
+}
+
+.active {
+    background-color: rgba(240, 240, 240, 0.09); /* Active square color */
+    /* background-color: #4bb24d; Active square color */
+}
+.selected {
+    background-color: rgba(164, 1, 27, 0.7); /* Colore per il quadrato selezionato */
+}

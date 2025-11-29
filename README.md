@@ -1,2 +1,2 @@
-# rp-race
-Randomize race for RP games.
+# terrain-randomizer
+Randomize your terrain for RP games.

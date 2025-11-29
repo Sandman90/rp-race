@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <meta charset="UTF-8">
+    <title>Mimic Race | SandBay</title>
+    <meta property="og:title" content="Terrain Randomizer | SandBay">
+    <meta property="og:description" content="A web application focused on the random selection of coordinates within a defined map grid, designed specifically for tabletop role-playing games (like D&D).">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://tools.obyte.it/public/tools/images/terrain-randomizer.max.png">
+    <meta property="og:url" content="https://tools.obyte.it/public/tools/assets/terrain-randomizer/index.html">
+    <meta name="description" content="A web application focused on the random selection of coordinates within a defined map grid, designed specifically for tabletop role-playing games (like D&D).">
+    <meta name="author" content="Sandman">
+    <meta name="copyright" content="Copyright 2025, Sandman">
+    <link rel="shortcut icon" type="image/x-icon" href="https://www.sandbay.it/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://tools.obyte.it/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://tools.obyte.it/assets/icons/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="https://tools.obyte.it/assets/icons/android-chrome-512x512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://tools.obyte.it/assets/icons/apple-touch-icon.png">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="content-language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    <link href="./styles/style.css" rel="stylesheet" crossorigin="anonymous" />
+</head>
+<body>
+<div class="clearfix m-auto my-1">
+    <body>
+    <div class="race-container">
+        <div class="finish-line"></div>
+        <div class="track">
+            <div class="creatures">
+                <div class="creature" id="creature1"></div>
+                <div class="creature" id="creature2"></div>
+                <div class="creature" id="creature3"></div>
+                <div class="creature" id="creature4"></div>
+                <div class="creature" id="creature5"></div>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="startButton">Start Race</button>
+            <button id="resetButton">Reset Race</button>
+        </div>
+    </div>
+    <!--
+    <audio id="startSound" src="start.mp3"></audio>
+    <audio id="endSound" src="end.mp3"></audio>-->
+    <audio id="startSound" src="audio/whistle-84607.mp3"></audio>
+    <audio id="endSound" src="audio/whistle-84607.mp3"></audio>
+    <audio id="raceSound" src="audio/noisy-door-230898.mp3" loop></audio>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="dist/bundle.min.js"></script>
+</body>
+</html>
