@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Suono di fine corsa
     endSound.play();
-    raceSound.pause();
+    // raceSound.pause();
 
     // Mostra il vincitore al centro
     if (winner) {
