@@ -8,16 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const trackElement = document.querySelector('.track') as HTMLElement;
   const finishLineElement = document.querySelector('.finish-line') as HTMLElement;
 
-// AGGIUNTO: Elementi per il display del vincitore
+// Elementi per il display del vincitore.
   const winnerDisplay = document.getElementById('winnerDisplay') as HTMLElement;
   const winnerText = document.getElementById('winnerText') as HTMLElement;
 
-// Suoni
+// Suoni.
   const startSound = document.getElementById('startSound') as HTMLAudioElement;
   const endSound = document.getElementById('endSound') as HTMLAudioElement;
   const raceSound = document.getElementById('raceSound') as HTMLAudioElement;
 
-// Variabili per i timer
+// Variabili per i timer.
   let raceTimeout: number;
   let raceDelayTimeout: number;
   let finishMarkerTimeout: number;
@@ -27,21 +27,21 @@ document.addEventListener('DOMContentLoaded', () => {
   let winner: Creature | null = null;
   let fakeWinner: Creature | null = null;
 
-// Configurazione della Corsa
+// Configurazione della corsa.
   const totalRaceDuration = 13000;     // Durata totale della corsa (5.0s)
   const startDelay = 1000;             // Ritardo prima del movimento del terreno (0.5s)
   const lineDescentDuration = 3000;   // Durata della discesa della linea (4.0s)
   const lineDescentStart = 10000;      // La linea inizia a scendere a 1000ms
   const CRASH_PROBABILITY = 0.95;      // 50% di probabilità di crash
 
-// Posizioni (Finali, ottimizzate)
+// Posizioni (Finali).
   const FINISH_LINE_START_TOP = 0;
   const FINISH_LINE_END_TOP = 596;
   const WINNER_LIFT_OFFSET = '-30px';
   const FAKE_WINNER_LIFT_OFFSET = '-15px';
   const CRASH_RETREAT_OFFSET = '150px'; // Di quanto arretra la creatura in caso di crash.
 
-// AGGIUNTO: Nomi delle creature
+// Nomi delle creature.
   const creatureNames = ['forziere', 'boccale', 'barile', 'sgabello', 'scopa'];
 
 // Array delle creature (modificato per includere il nome)
@@ -51,8 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     name: creatureNames[index] // Assegna il nome in base all'ordine
   }));
 
-// --- Funzioni di Utilità ---
-
+// Funzioni di Utility.
   function showStartButton() {
     startButton.style.display = 'inline-block';
     resetButton.style.display = 'none';
@@ -85,8 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     finishLineElement.style.transition = `opacity 0.5s ease-in, top ${lineDescentDuration / 1000}s linear`;
   }
 
-// --- Logica Crash (Rimanere Indietro) ---
-
+// Logica Crash (Rimanere Indietro).
   function setupCrashEvent(nonParticipants: Creature[]) {
     if (Math.random() > CRASH_PROBABILITY || nonParticipants.length === 0) {
       return;
@@ -104,8 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, crashTime);
   }
 
-// --- Funzioni di Gestione della Corsa ---
-
+// Funzioni di Gestione della corsa.
   function startRace() {
     if (isRaceRunning) return;
 
@@ -114,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resetButton.disabled = true;
     showResetButton();
 
-    // 1. Determina vincitore e quasi-vincitore
+    // 1. Determino vincitore e quasi-vincitore.
     const winnerIndex = Math.floor(Math.random() * creatures.length);
     winner = creatures[winnerIndex];
 
@@ -124,17 +121,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     fakeWinner = creatures[fakeWinnerIndex];
 
-    // 2. Prepara i non-partecipanti per il crash
+    // 2. Preparo i non-partecipanti per il crash.
     const nonParticipants = creatures.filter(c => c !== winner && c !== fakeWinner);
     setupCrashEvent(nonParticipants);
 
 
-    // 3. Fischio d'inizio e start del suono continuo
+    // 3. Fischio d'inizio e start del suono continuo.
     startSound.play();
     raceSound.currentTime = 0;
     raceSound.play();
 
-    // 4. Avvio della corsa effettiva
+    // 4. Avvio della corsa effettiva.
     raceDelayTimeout = window.setTimeout(() => {
       trackElement.classList.add('racing');
       creatures.forEach(creature => {
@@ -142,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, startDelay);
 
-    // 5. L'effetto "quasi vincitore" a metà corsa
+    // 5. L'effetto "quasi vincitore" a metà corsa.
     fakeWinTimeout = window.setTimeout(() => {
       if (fakeWinner) {
         fakeWinner.element.classList.add('fake-winner');
@@ -151,14 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, 2000);
 
-    // 6. Attivazione della linea del traguardo e scatto del vincitore
+    // 6. Attivazione della linea del traguardo e scatto del vincitore.
     finishMarkerTimeout = window.setTimeout(() => {
       // Linea
       finishLineElement.style.opacity = '1';
       finishLineElement.classList.add('active');
       finishLineElement.style.top = `${FINISH_LINE_END_TOP}px`;
 
-      // Vincitore
+      // Vincitore.
       if (winner) {
         winner.element.classList.add('winner');
         void winner.element.offsetWidth;
@@ -167,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }, lineDescentStart);
 
-    // 7. Fine della corsa
+    // 7. Fine della corsa.
     raceTimeout = window.setTimeout(() => {
       endRace();
     }, totalRaceDuration);
@@ -199,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.disabled = false;
     resetButton.disabled = false;
 
-    // Fermiamo le animazioni
+    // Fermo le animazioni.
     trackElement.classList.remove('racing');
     creatures.forEach(creature => {
       if (!creature.element.classList.contains('crashed')) {
@@ -208,11 +205,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     finishLineElement.classList.remove('active');
 
-    // Suono di fine corsa
+    // Suono di fine corsa.
     endSound.play();
     // raceSound.pause();
 
-    // Mostra il vincitore al centro
+    // Mostro il vincitore al centro.
     if (winner) {
       winnerText.textContent = `Il mimic ${winner.name}`; // Messaggio dinamico
       winnerDisplay.classList.add('show'); // Rende visibile il div
@@ -243,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showStartButton();
   }
 
-// --- Event Listeners e Inizializzazione ---
+// Event Listeners e Inizializzazione.
 
   startButton.addEventListener('click', startRace);
   resetButton.addEventListener('click', resetRace);

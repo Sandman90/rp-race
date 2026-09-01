@@ -2,7 +2,7 @@
 interface Creature {
   element: HTMLElement;
   id: string;
-  name: string; // AGGIUNTO: Nome della creatura
+  name: string; // Nome della creatura.
 }
 
 export { Creature };

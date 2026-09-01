@@ -24,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
-    <link href="./styles/style.css" rel="stylesheet" crossorigin="anonymous" />
+    <link href="./styles/style.css?v=1.1" rel="stylesheet" crossorigin="anonymous" />
 </head>
 <body>
 <div class="clearfix m-auto my-1">
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="controls">
-            <button id="startButton">Start mimic race</button>
+            <button id="startButton">Start mimic race<br>(alert fischio d'inizio)</button>
             <button id="resetButton">Reset race</button>
         </div>
     </div>
@@ -55,6 +55,14 @@
     <audio id="startSound" src="audio/whistle-84607.mp3"></audio>
     <audio id="endSound" src="audio/whistle-84607.mp3"></audio>
     <audio id="raceSound" src="audio/crowd-cheering-379666.mp3"></audio>
+
+    <div id="credits">
+        <p>Created by</p>
+        <div id="logo">
+            <a class="logo" href="https://sandbay.it/" target="_blank"><span class="sr-only">SandBay</span></a>
+            <a class="logo hover" href="https://sandbay.it/" target="_blank"><span class="sr-only">SandBay</span></a>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
